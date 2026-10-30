@@ -6,8 +6,9 @@
 	$id = 0;
 	$firstName = "";
 	$lastName = "";
-
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331"); 	
+	
+	//Any login credentials replaced with placeholders
+	$conn = new mysqli("placeholder", "placeholder", "placeholder", "placeholder"); 	
 	if( $conn->connect_error )
 	{
 		returnWithError( $conn->connect_error );
