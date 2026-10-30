@@ -1,0 +1,28 @@
+@startuml
+
+left to right direction
+:User:
+
+rectangle Server {
+  usecase "Add Color" as UC1
+  usecase "Search Color" as UC2
+  usecase "Return Data" as UC3
+  usecase "Login" as UC4
+}
+
+:Database:
+
+User .> UC4: <<include>>
+User --> UC2
+User --> UC1
+
+User -- (Server)
+(Server) -- Database
+
+Database .> UC3: <<extend>>
+UC3 .> User: <<extend>>
+
+UC1 --> Database
+UC2 --> Database
+
+@enduml

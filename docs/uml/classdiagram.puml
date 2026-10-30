@@ -9,8 +9,8 @@ Class Users{
 }
 
 Class Colors{
+	-Name: String
     -UserID: Integer
-    -Name: String
     +AddColor(Name, UserID)
     +SearchColors(Name, UserID)
 }

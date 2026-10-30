@@ -1,0 +1,28 @@
+@startuml
+
+start
+
+repeat: Attempt Login;
+repeat while (Login Success) is (No)
+->Yes;
+
+repeat: User Action Choice;
+if (Logout) then (Yes)
+      
+      break
+    endif
+    ->No;
+    
+    switch (Operation options)
+        case ( Add )
+        :Add Color;
+        case ( Search ) 
+        :Search Color;
+    endswitch
+
+repeat while (Logout) is (No) not (Yes)
+
+
+stop
+
+@enduml
