@@ -1,0 +1,18 @@
+@startuml
+Class Users{
+    -Login: String
+    -Password: String
+    -FirstName: String
+    -LastName: String
+    -ID: Integer
+    +Login(Login, Password)
+}
+
+Class Colors{
+	-Name: String
+    -UserID: Integer
+    +AddColor(Name, UserID)
+    +SearchColors(Name, UserID)
+}
+Users "1" --> "contains 0..*" Colors: Uses ID value as UserID
+@enduml
