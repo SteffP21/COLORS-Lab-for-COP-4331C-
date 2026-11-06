@@ -1,0 +1,20 @@
+<?php
+
+class mysqli_stmt
+{
+    public function bind_param(string $types, mixed &...$vars): bool
+    {
+    }
+
+    public function execute(): bool
+    {
+    }
+
+    public function close(): bool
+    {
+    }
+
+    public function get_result(): mysqli_result|false
+    {
+    }
+}

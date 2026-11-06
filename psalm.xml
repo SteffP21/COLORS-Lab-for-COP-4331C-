@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<psalm>
+    <projectFiles>
+        <directory name="API" />
+    </projectFiles>
+    <enableExtensions>
+        <extension name="mysqli" />
+    </enableExtensions>
+    <stubs>
+        <file name="psalm-stubs/mysqli.phpstub" />
+    </stubs>
+</psalm>
