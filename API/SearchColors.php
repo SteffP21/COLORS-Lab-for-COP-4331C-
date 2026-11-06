@@ -1,68 +1,84 @@
 <?php
 
-	$inData = getRequestInfo();
-	
-	$searchResults = "";
-	$searchCount = 0;
+$inData = getRequestInfo();
 
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
-	if ($conn->connect_error) 
-	{
-		returnWithError( $conn->connect_error );
-	} 
-	else
-	{
-		$stmt = $conn->prepare("select Name from Colors where Name like ? and UserID=?");
-		$colorName = "%" . $inData["search"] . "%";
-		$stmt->bind_param("ss", $colorName, $inData["userId"]);
-		$stmt->execute();
-		
-		$result = $stmt->get_result();
-		
-		while($row = $result->fetch_assoc())
-		{
-			if( $searchCount > 0 )
-			{
-				$searchResults .= ",";
-			}
-			$searchCount++;
-			$searchResults .= '"' . $row["Name"] . '"';
-		}
-		
-		if( $searchCount == 0 )
-		{
-			returnWithError( "No Records Found" );
-		}
-		else
-		{
-			returnWithInfo( $searchResults );
-		}
-		
-		$stmt->close();
-		$conn->close();
-	}
+$searchResults = [];
+$conn = new mysqli(
+    getenv("DB_HOST") ?: "localhost",
+    getenv("DB_USER") ?: "",
+    getenv("DB_PASSWORD") ?: "",
+    getenv("DB_NAME") ?: "COP4331"
+);
+if ($conn->connect_error !== null) {
+    returnWithError($conn->connect_error);
+} else {
+    $search = (string) ($inData["search"] ?? "");
+    $userId = (string) ($inData["userId"] ?? "");
+    $stmt = $conn->prepare("select Name from Colors where Name like ? and UserID=?");
+    $colorName = "%" . $search . "%";
+    $stmt->bind_param("ss", $colorName, $userId);
+    $stmt->execute();
 
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
+    $result = $stmt->get_result();
 
-	function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
-	
-	function returnWithError( $err )
-	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
-	}
-	
-	function returnWithInfo( $searchResults )
-	{
-		$retValue = '{"results":[' . $searchResults . '],"error":""}';
-		sendResultInfoAsJson( $retValue );
-	}
-	
-?>
+    while (($row = $result->fetch_assoc()) !== null && $row !== false) {
+        $searchResults[] = (string) $row["Name"];
+    }
+
+    if ($searchResults === []) {
+        returnWithError("No Records Found");
+    } else {
+        returnWithInfo($searchResults);
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+
+/**
+ * @return array<array-key, mixed>
+ */
+function getRequestInfo(): array
+{
+    $requestBody = file_get_contents("php://input");
+    if ($requestBody === false) {
+        return [];
+    }
+
+    $requestData = json_decode($requestBody, true);
+
+    return is_array($requestData) ? $requestData : [];
+}
+
+function sendResultInfoAsJson(string $obj): void
+{
+    header("Content-type: application/json");
+    echo $obj;
+}
+
+function returnWithError(string $err): void
+{
+    $retValue = json_encode([
+        "id" => 0,
+        "firstName" => "",
+        "lastName" => "",
+        "error" => $err,
+    ]);
+    if ($retValue !== false) {
+        sendResultInfoAsJson($retValue);
+    }
+}
+
+/**
+ * @param array<int, string> $searchResults
+ */
+function returnWithInfo(array $searchResults): void
+{
+    $retValue = json_encode([
+        "results" => $searchResults,
+        "error" => "",
+    ]);
+    if ($retValue !== false) {
+        sendResultInfoAsJson($retValue);
+    }
+}
