@@ -2,10 +2,15 @@
 <?php
 
 	$inData = getRequestInfo();
-	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
+
+	if (
+    	!isset($inData['login'], $inData['password'])
+    	|| !is_string($inData['login'])
+    	|| !is_string($inData['password'])
+	) {
+    	returnWithError('Invalid login request');
+    	exit;
+	}
 	
 	//Any login credentials replaced with placeholders
 	$conn = new mysqli("placeholder", "placeholder", "placeholder", "placeholder"); 	
@@ -22,7 +27,7 @@
 
 		if( $row = $result->fetch_assoc()  )
 		{
-			returnWithInfo( $row['firstName'], $row['lastName'], $row['ID'] );
+			returnWithInfo((string) $row['firstName'], (string) $row['lastName'], (int) $row['ID']);
 		}
 		else
 		{
@@ -33,24 +38,24 @@
 		$conn->close();
 	}
 	
-	function getRequestInfo()
+	function getRequestInfo(): array
 	{
 		return json_decode(file_get_contents('php://input'), true);
 	}
 
-	function sendResultInfoAsJson( $obj )
+	function sendResultInfoAsJson(string $json): void
 	{
 		header('Content-type: application/json');
 		echo $obj;
 	}
 	
-	function returnWithError( $err )
+	function returnWithError(string $error): void
 	{
 		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $firstName, $lastName, $id )
+	function returnWithInfo(string $firstName, string $lastName, int $id): void
 	{
 		$retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
 		sendResultInfoAsJson( $retValue );
