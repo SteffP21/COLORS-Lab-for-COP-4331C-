@@ -6,10 +6,17 @@ $color = (string) ($inData["color"] ?? "");
 $userId = (string) ($inData["userId"] ?? "");
 
 $conn = new mysqli(
-    getenv("DB_HOST") ?: "localhost",
-    getenv("DB_USER") ?: "",
-    getenv("DB_PASSWORD") ?: "",
-    getenv("DB_NAME") ?: "COP4331"
+    $dbHost = getenv("DB_HOST");
+	$dbHost = $dbHost === false ? "localhost" : $dbHost;
+	
+	$dbUser = getenv("DB_USER");
+	$dbUser = $dbUser === false ? "null" : $dbUser;
+
+    $dbPassword = getenv("DB_PASSWORD");
+	$dbPassword = $dbPassword === false ? "null" : $dbPassword;
+
+    $dbName = getenv("DB_NAME");
+	$dbName = $dbName === false ? "COP4331" : $dbName;
 );
 if ($conn->connect_error !== null) {
     returnWithError($conn->connect_error);

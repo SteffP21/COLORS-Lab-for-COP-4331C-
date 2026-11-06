@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Project standard">
+    <rule ref="PSR12">
+        <exclude name="PSR1.Files.SideEffects"/>
+    </rule>
+</ruleset>

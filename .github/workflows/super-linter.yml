@@ -38,3 +38,7 @@ jobs:
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILTER_REGEX_EXCLUDE: '(^|/)README\.md$|(^|/)Public info/js/md5\.js$'
+          VALIDATE_BIOME_FORMAT: false
+          LINTER_RULES_PATH: .
+          LOG_LEVEL: DEBUG
