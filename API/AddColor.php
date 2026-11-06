@@ -1,8 +1,17 @@
 <?php
 	$inData = getRequestInfo();
-	
-	$color = $inData["color"];
-	$userId = $inData["userId"];
+
+	if (
+    	!isset($inData['color'], $inData['userId'])
+    	|| !is_string($inData['color'])
+    	|| (!is_string($inData['userId']) && !is_int($inData['userId']))
+	) {
+    	returnWithError('Invalid color request');
+    	exit;
+	}
+
+	$color = $inData['color'];
+	$userId = (string) $inData['userId'];
 
 	//Any login credentials replaced with placeholders
 	$conn = new mysqli("placeholder", "placeholder", "placeholder", "placeholder"); 
@@ -20,18 +29,18 @@
 		returnWithError("");
 	}
 
-	function getRequestInfo()
+	function getRequestInfo(): array
 	{
 		return json_decode(file_get_contents('php://input'), true);
 	}
 
-	function sendResultInfoAsJson( $obj )
+	function sendResultInfoAsJson(string $json): void
 	{
 		header('Content-type: application/json');
 		echo $obj;
 	}
 	
-	function returnWithError( $err )
+	function returnWithError(string $error): void
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
