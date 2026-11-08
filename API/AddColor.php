@@ -5,19 +5,19 @@ $inData = getRequestInfo();
 $color = (string) ($inData["color"] ?? "");
 $userId = (string) ($inData["userId"] ?? "");
 
-$conn = new mysqli(
-    $dbHost = getenv("DB_HOST");
-	$dbHost = $dbHost === false ? "localhost" : $dbHost;
-	
-	$dbUser = getenv("DB_USER");
-	$dbUser = $dbUser === false ? "null" : $dbUser;
+$dbHost = getenv("DB_HOST");
+$dbHost = $dbHost === false ? "localhost" : $dbHost;
 
-    $dbPassword = getenv("DB_PASSWORD");
-	$dbPassword = $dbPassword === false ? "null" : $dbPassword;
+$dbUser = getenv("DB_USER");
+$dbUser = $dbUser === false ? "null" : $dbUser;
 
-    $dbName = getenv("DB_NAME");
-	$dbName = $dbName === false ? "COP4331" : $dbName;
-);
+$dbPassword = getenv("DB_PASSWORD");
+$dbPassword = $dbPassword === false ? "null" : $dbPassword;
+
+$dbName = getenv("DB_NAME");
+$dbName = $dbName === false ? "COP4331" : $dbName;
+
+$conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
 if ($conn->connect_error !== null) {
     returnWithError($conn->connect_error);
 } else {

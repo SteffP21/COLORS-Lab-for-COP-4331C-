@@ -38,7 +38,7 @@ body {
 .buttons {
   font-size: 30px;
   border-radius: 25px;
-  width: 0.5;
+  width: 50%;
   margin-left: 25%;
   font-family: Ubuntu, sans-serif;
 }
@@ -46,21 +46,25 @@ body {
 .buttons:hover {
   background-color: #00d5124f;
   color: #FFF;
-  opacity: 50%;
+  opacity: 0.5;
 }
 
 #login-name {
   font-size: 30px;
 }
+
 #login-password {
   font-size: 30px;
 }
+
 #search-text {
   font-size: 30px;
 }
+
 #color-text {
   font-size: 30px;
 }
+
 
 input[type="text"],
 input[type="password"] {

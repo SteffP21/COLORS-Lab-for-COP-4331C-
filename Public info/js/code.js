@@ -10,11 +10,11 @@ function doLogin() {
   firstName = "";
   lastName = "";
 
-  let login = document.getElementById("loginName").value;
-  let password = document.getElementById("loginPassword").value;
+  let login = document.getElementById("login-name").value;
+  let password = document.getElementById("login-password").value;
   //	var hash = md5( password );
 
-  document.getElementById("loginResult").innerHTML = "";
+  document.getElementById("login-result").innerHTML = "";
 
   let tmp = { login: login, password: password };
   //	var tmp = {login:login,password:hash};
@@ -27,12 +27,12 @@ function doLogin() {
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
   try {
     xhr.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
+      if (this.readyState === 4 && this.status === 200) {
         let jsonObject = JSON.parse(xhr.responseText);
         userId = jsonObject.id;
 
         if (userId < 1) {
-          document.getElementById("loginResult").innerHTML =
+          document.getElementById("login-result").innerHTML =
             "User/Password combination incorrect";
           return;
         }
@@ -47,7 +47,7 @@ function doLogin() {
     };
     xhr.send(jsonPayload);
   } catch (err) {
-    document.getElementById("loginResult").innerHTML = err.message;
+    document.getElementById("login-result").innerHTML = err.message;
   }
 }
 
@@ -73,11 +73,11 @@ function readCookie() {
   for (var i = 0; i < splits.length; i++) {
     let thisOne = splits[i].trim();
     let tokens = thisOne.split("=");
-    if (tokens[0] == "firstName") {
+    if (tokens[0] === "firstName") {
       firstName = tokens[1];
-    } else if (tokens[0] == "lastName") {
+    } else if (tokens[0] === "lastName") {
       lastName = tokens[1];
-    } else if (tokens[0] == "userId") {
+    } else if (tokens[0] === "userId") {
       userId = parseInt(tokens[1].trim());
     }
   }
@@ -98,10 +98,10 @@ function doLogout() {
 }
 
 function addColor() {
-  let newColor = document.getElementById("colorText").value;
-  document.getElementById("colorAddResult").innerHTML = "";
+  let newColor = document.getElementById("color-text").value;
+  document.getElementById("color-add-result").innerHTML = "";
 
-  let tmp = { color: newColor, userId, userId };
+  let tmp = { color: newColor, userId };
   let jsonPayload = JSON.stringify(tmp);
 
   let url = urlBase + "/AddColor." + extension;
@@ -111,14 +111,14 @@ function addColor() {
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
   try {
     xhr.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("colorAddResult").innerHTML =
+      if (this.readyState === 4 && this.status === 200) {
+        document.getElementById("color-add-result").innerHTML =
           "Color has been added";
       }
     };
     xhr.send(jsonPayload);
   } catch (err) {
-    document.getElementById("colorAddResult").innerHTML = err.message;
+    document.getElementById("color-add-result").innerHTML = err.message;
   }
 }
 
@@ -138,8 +138,8 @@ function searchColor() {
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
   try {
     xhr.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("colorSearchResult").innerHTML =
+      if (this.readyState === 4 && this.status === 200) {
+        document.getElementById("color-search-result").innerHTML =
           "Color(s) has been retrieved";
         let jsonObject = JSON.parse(xhr.responseText);
 
@@ -150,11 +150,22 @@ function searchColor() {
           }
         }
 
-        document.getElementsByTagName("p")[0].innerHTML = colorList;
+        document.getElementById("color-search-result").innerHTML = colorList;
       }
     };
     xhr.send(jsonPayload);
   } catch (err) {
-    document.getElementById("colorSearchResult").innerHTML = err.message;
+    document.getElementById("color-search-result").innerHTML = err.message;
   }
+}
+
+document.getElementById("login-button")?.addEventListener("click", doLogin);
+document.getElementById("logout-button")?.addEventListener("click", doLogout);
+document
+  .getElementById("search-color-button")
+  ?.addEventListener("click", searchColor);
+document.getElementById("add-color-button")?.addEventListener("click", addColor);
+
+if (document.getElementById("logged-in-div")) {
+  readCookie();
 }

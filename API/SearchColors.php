@@ -3,19 +3,20 @@
 $inData = getRequestInfo();
 
 $searchResults = [];
-$conn = new mysqli(
-    $dbHost = getenv("DB_HOST");
-	$dbHost = $dbHost === false ? "localhost" : $dbHost;
-	
-	$dbUser = getenv("DB_USER");
-	$dbUser = $dbUser === false ? "null" : $dbUser;
 
-    $dbPassword = getenv("DB_PASSWORD");
-	$dbPassword = $dbPassword === false ? "null" : $dbPassword;
+$dbHost = getenv("DB_HOST");
+$dbHost = $dbHost === false ? "localhost" : $dbHost;
 
-    $dbName = getenv("DB_NAME");
-	$dbName = $dbName === false ? "COP4331" : $dbName;
-);
+$dbUser = getenv("DB_USER");
+$dbUser = $dbUser === false ? "null" : $dbUser;
+
+$dbPassword = getenv("DB_PASSWORD");
+$dbPassword = $dbPassword === false ? "null" : $dbPassword;
+
+$dbName = getenv("DB_NAME");
+$dbName = $dbName === false ? "COP4331" : $dbName;
+
+$conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
 if ($conn->connect_error !== null) {
     returnWithError($conn->connect_error);
 } else {
