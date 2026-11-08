@@ -69,10 +69,9 @@ function saveCookie() {
 function readCookie() {
   userId = -1;
   let data = document.cookie;
-  let splits = data.split(",");
-  for (var i = 0; i < splits.length; i++) {
-    let thisOne = splits[i].trim();
-    let tokens = thisOne.split("=");
+  const splits = data.split(",");
+  for (const thisOne of splits) {
+    let tokens = thisOne.trim().split("=");
     if (tokens[0] === "firstName") {
       firstName = tokens[1];
     } else if (tokens[0] === "lastName") {
@@ -164,7 +163,9 @@ document.getElementById("logout-button")?.addEventListener("click", doLogout);
 document
   .getElementById("search-color-button")
   ?.addEventListener("click", searchColor);
-document.getElementById("add-color-button")?.addEventListener("click", addColor);
+document
+  .getElementById("add-color-button")
+  ?.addEventListener("click", addColor);
 
 if (document.getElementById("logged-in-div")) {
   readCookie();
