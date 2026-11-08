@@ -36,7 +36,7 @@ if ($conn->connect_error !== null) {
     if ($searchResults === []) {
         returnWithError("No Records Found");
     } else {
-        returnWithInfo($searchResults);
+        returnWithResults($searchResults);
     }
 
     $stmt->close();
@@ -80,7 +80,7 @@ function returnWithError(string $err): void
 /**
  * @param array<int, string> $searchResults
  */
-function returnWithInfo(array $searchResults): void
+function returnWithResults(array $searchResults): void
 {
     $retValue = json_encode([
         "results" => $searchResults,
