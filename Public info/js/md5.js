@@ -21,8 +21,7 @@
 
 /* eslint-disable strict */
 
-;(function($) {
-  'use strict'
+;(($) => {
 
   /**
    * Add integers, wrapping at 2^32.
@@ -391,9 +390,8 @@
   }
 
   if (typeof define === 'function' && define.amd) {
-    define(function() {
-      return md5
-    })
+    define(() => md5)
+    
   } else if (typeof module === 'object' && module.exports) {
     module.exports = md5
   } else {
