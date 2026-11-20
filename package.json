@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "jest": "^30.5.2"
+  },
+  "allowScripts": {
+    "jest@30.5.2": true
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
