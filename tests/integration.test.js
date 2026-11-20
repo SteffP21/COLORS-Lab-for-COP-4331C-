@@ -1,4 +1,3 @@
-const { randomUUID } = require("node:crypto");
 const { test, expect } = require("@jest/globals");
 
 async function post(endpoint, data) {
@@ -42,7 +41,7 @@ test("SearchColors works as intended", async () => {
 
   const found = await post("SearchColors", { search: "green", userId: 1 });
   expect(found.error).toBe("");
-  expect(found.responses).toContain("green");
+  expect(found.results).toContain("green");
 
   const otherUser = await post("SearchColors", { search: "green", userId: 2 });
   expect(otherUser.error).toBe("No Records Found");

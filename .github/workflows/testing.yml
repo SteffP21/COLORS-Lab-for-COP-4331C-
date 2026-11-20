@@ -5,17 +5,40 @@ on: # yamllint disable-line rule:truthy
   push: null
   pull_request: null
 
-permissions: {}
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ci_root_password
+          MYSQL_DATABASE: COP4331
+          MYSQL_USER: ci_user
+          MYSQL_PASSWORD: ci_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -pci_root_password --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_USER: ci_user
+      DB_PASSWORD: ci_password
+      DB_NAME: COP4331
+
+
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          fetch-depth: 0
           persist-credentials: false
 
       - name: Node.js startup
@@ -32,5 +55,28 @@ jobs:
       - name: Node.js CI
         run: npm ci
 
-      - name: Run tests from folder
-        run: npm test
+      - name: Create tables and load test data
+        run: |
+          docker exec -i "${{ job.services.mysql.id }}" \
+            sh -c 'exec mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"' \
+            < tests/queries.sql
+
+      - name: Run PHP and tests
+        run: |
+          php -S 127.0.0.1:8000 -t . > php-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:8000/API/Login.php -o /dev/null 2>/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+
+          if ! curl -fsS http://127.0.0.1:8000/API/Login.php -o /dev/null; then
+            cat php-server.log
+            exit 1
+          fi
+
+          npm test

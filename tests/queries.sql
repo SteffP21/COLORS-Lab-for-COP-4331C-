@@ -1,7 +1,7 @@
 CREATE TABLE Users (
   ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  FirstName VARCHAR(50) NOT NULL,
-  LastName VARCHAR(50) NOT NULL,
+  firstName VARCHAR(50) NOT NULL,
+  lastName VARCHAR(50) NOT NULL,
   Login VARCHAR(50) NOT NULL,
   Password VARCHAR(50) NOT NULL
 );
@@ -12,7 +12,7 @@ CREATE TABLE Colors (
   UserID INT NOT NULL
 );
 
-INSERT INTO Users (ID, FirstName, LastName, Login, Password)
+INSERT INTO Users (ID, firstName, lastName, Login, Password)
 VALUES (1, 'testing', 'testing', 'testing', 'testing');
 
 INSERT INTO Colors (ID, Name, UserID)

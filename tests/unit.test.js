@@ -1,4 +1,3 @@
-const { randomUUID } = require("node:crypto");
 const { test, expect } = require("@jest/globals");
 
 async function post(endpoint, data) {
@@ -41,7 +40,13 @@ test("Check AddColors", async () => {
   expect(response).toEqual({ error: "" });
 });
 
-test("Check SearchColors", async () => {
-  const response = await post("SearchColors", { search: "purple", userId: 1 });
+test("Check SearchColors Success", async () => {
+  const response = await post("SearchColors", { search: "yellow", userId: 1 });
+  expect(response.error).toBe("");
+  expect(response.results).toContain("yellow");
+});
+
+test("Check SearchColors Failure", async () => {
+  const response = await post("SearchColors", { search: "tan", userId: 1 });
   expect(response.error).toBe("No Records Found");
 });
