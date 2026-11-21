@@ -21,7 +21,9 @@ $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
 if ($conn->connect_error !== null) {
     returnWithError($conn->connect_error);
 } else {
-    $stmt = $conn->prepare("INSERT into Colors (UserId,Name) VALUES(?,?)");
+    $stmt = $conn->prepare(
+        "INSERT INTO Colors (Userid, Colorname) VALUES (?, ?)"
+    );
     $stmt->bind_param("ss", $userId, $color);
     $stmt->execute();
     $stmt->close();

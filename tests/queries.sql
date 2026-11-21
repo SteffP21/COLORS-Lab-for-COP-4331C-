@@ -1,25 +1,25 @@
 CREATE TABLE Users (
-  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  firstName VARCHAR(50) NOT NULL,
-  lastName VARCHAR(50) NOT NULL,
-  Login VARCHAR(50) NOT NULL,
-  Password VARCHAR(50) NOT NULL
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Firstname VARCHAR(50) NOT NULL,
+    Lastname VARCHAR(50) NOT NULL,
+    Username VARCHAR(50) NOT NULL,
+    Passwordhash VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Colors (
-  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  Name VARCHAR(50) NOT NULL,
-  UserID INT NOT NULL
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Colorname VARCHAR(50) NOT NULL,
+    Userid INT NOT NULL
 );
 
-INSERT INTO Users (ID, firstName, lastName, Login, Password)
+INSERT INTO Users (Id, Firstname, Lastname, Username, Passwordhash)
 VALUES (1, 'testing', 'testing', 'testing', 'testing');
 
-INSERT INTO Colors (ID, Name, UserID)
+INSERT INTO Colors (Id, Colorname, Userid)
 VALUES (1, 'yellow', 1);
 
-INSERT INTO Colors (ID, Name, UserID)
+INSERT INTO Colors (Id, Colorname, Userid)
 VALUES (2, 'red', 1);
 
-INSERT INTO Colors (ID, Name, UserID)
+INSERT INTO Colors (Id, Colorname, Userid)
 VALUES (3, 'purple', 1);

@@ -21,7 +21,10 @@ if ($conn->connect_error !== null) {
 } else {
     $login = (string) ($inData["login"] ?? "");
     $password = (string) ($inData["password"] ?? "");
-    $stmt = $conn->prepare("SELECT ID,firstName,lastName FROM Users WHERE Login=? AND Password =?");
+    $stmt = $conn->prepare(
+        "SELECT Id,Firstname,Lastname FROM Users "
+        . "WHERE Username=? AND Passwordhash=?"
+    );
     $stmt->bind_param("ss", $login, $password);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -29,9 +32,9 @@ if ($conn->connect_error !== null) {
     $row = $result->fetch_assoc();
     if ($row !== null && $row !== false) {
         returnWithInfo(
-            (string) $row["firstName"],
-            (string) $row["lastName"],
-            (int) $row["ID"]
+            (string) $row["Firstname"],
+            (string) $row["Lastname"],
+            (int) $row["Id"]
         );
     } else {
         returnWithError("No Records Found");

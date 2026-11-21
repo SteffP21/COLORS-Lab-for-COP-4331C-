@@ -22,7 +22,10 @@ if ($conn->connect_error !== null) {
 } else {
     $search = (string) ($inData["search"] ?? "");
     $userId = (string) ($inData["userId"] ?? "");
-    $stmt = $conn->prepare("select Name from Colors where Name like ? and UserID=?");
+    $stmt = $conn->prepare(
+        "SELECT Colorname FROM Colors "
+        . "WHERE Colorname LIKE ? AND Userid=?"
+    );
     $colorName = "%" . $search . "%";
     $stmt->bind_param("ss", $colorName, $userId);
     $stmt->execute();
@@ -30,7 +33,7 @@ if ($conn->connect_error !== null) {
     $result = $stmt->get_result();
 
     while (($row = $result->fetch_assoc()) !== null && $row !== false) {
-        $searchResults[] = (string) $row["Name"];
+        $searchResults[] = (string) $row["Colorname"];
     }
 
     if ($searchResults === []) {
