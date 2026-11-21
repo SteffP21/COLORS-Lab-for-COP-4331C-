@@ -58,8 +58,8 @@ jobs:
           MYSQL_CONTAINER_ID: ${{ job.services.mysql.id }}
         run: |
           docker exec -i "$MYSQL_CONTAINER_ID" \
-            mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" \
-            "$MYSQL_DATABASE" < tests/queries.sql
+            mysql -u "$DB_USER" -p"$DB_PASSWORD" \
+            "$DB_NAME" < tests/queries.sql
 
       - name: Run PHP and tests
         run: |
