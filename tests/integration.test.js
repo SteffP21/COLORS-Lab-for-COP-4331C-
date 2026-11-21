@@ -36,8 +36,9 @@ test("Login failure", async () => {
 });
 
 test("SearchColors works as intended", async () => {
-
-  expect(await post("AddColor", { color: "green", userId: 1})).toEqual({error: ""});
+  expect(await post("AddColor", { color: "green", userId: 1 })).toEqual({
+    error: "",
+  });
 
   const found = await post("SearchColors", { search: "green", userId: 1 });
   expect(found.error).toBe("");
